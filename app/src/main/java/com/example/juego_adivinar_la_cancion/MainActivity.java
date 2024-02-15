@@ -25,7 +25,10 @@ MediaPlayer media;
 private final int[] listaAudios = {R.raw.audio1, R.raw.audio2};
 
 ArrayList<String> nombresPortadas = new ArrayList<>();
-    private int indicePortadaActual = 1;
+    private int indicePortadaActual = 0;
+    String respuesta = "",respuesta2 ="",respuesta3 ="";
+
+    Boolean acertado =false;
 private final int REQUEST_CODE_PERMISSIONS = 1000;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +44,8 @@ private final int REQUEST_CODE_PERMISSIONS = 1000;
         opcion2=findViewById(R.id.opcion2);
         opcion3=findViewById(R.id.opcion3);
 
-        nombresPortadas.add("portada");
+        nombresPortadas.add("portada1");
+        nombresPortadas.add("portada2");
 
         if(ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
                 ContextCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED ||
@@ -76,56 +80,74 @@ private final int REQUEST_CODE_PERMISSIONS = 1000;
                 stopLocal(view);
             }
         });
+        opcion1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                respuesta = opcion1.getText().toString();
+                Toast.makeText(MainActivity.this, "Opcion seleccionada " + respuesta, Toast.LENGTH_SHORT).show();
+            }
+        });
+        opcion2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                respuesta = opcion2.getText().toString();
+                Toast.makeText(MainActivity.this, "Opcion seleccionada " + respuesta, Toast.LENGTH_SHORT).show();
+            }
+        });
         btnEnviar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String nombrePortada = cambiarPortadaAleatoriamente(nombresPortadas);
+
+                boolean respuestaCorrecta = false;
+
                 if(nombrePortada.equals("portada1")){
-                    cambiarOpcion(nombrePortada);
-                    String opcion = opcion1.getText().toString();
-                    Toast.makeText(MainActivity.this, opcion, Toast.LENGTH_SHORT).show();
-                    if(opcion.equals("Bichiyal")){
-                        cambiarCancionAleatoriamente();
-                        eliminarCancionActual();
-                        nombresPortadas.remove(nombrePortada);
-                        cambiarOpcion(nombrePortada);
+                    if (respuesta.equals("Bichiyal")){
+                        respuestaCorrecta = true;
                     }
-                }else if(nombrePortada.equals("portada2")){
-                    cambiarOpcion(nombrePortada);
-                    if(opcion2.isChecked()){
-                        cambiarCancionAleatoriamente();
-                        eliminarCancionActual();
-                        nombresPortadas.remove(nombrePortada);
-                        cambiarOpcion(nombrePortada);
+                } else if(nombrePortada.equals("portada2")){
+                    if(respuesta.equals("Moscow Mule")){
+                        respuestaCorrecta = true;
                     }
-                }else if(nombrePortada.equals("portada3")){
-                    cambiarOpcion(nombrePortada);
-                    if(opcion2.isChecked()){
-                        cambiarCancionAleatoriamente();
-                        eliminarCancionActual();
-                        nombresPortadas.remove(nombrePortada);
-                        cambiarOpcion(nombrePortada);
+                } else if(nombrePortada.equals("portada3")){
+                    if(respuesta.equals("Se fue")){
+                        respuestaCorrecta = true;
                     }
                 }
-                Toast.makeText(MainActivity.this, "Se ha pulsado el botón Enviar", Toast.LENGTH_SHORT).show();
 
+                if (respuestaCorrecta == true) {
+                    String cambio2 = cambiarPortadaAleatoriamente(nombresPortadas);
+                    cambiarOpcion(cambio2);
+                    cambiarCancionAleatoriamente();
+                    eliminarCancionActual();
+                    nombresPortadas.remove(nombrePortada);
+
+                    Toast.makeText(MainActivity.this, "Opción correcta.", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(MainActivity.this, "Opción incorrecta, intenta de nuevo.", Toast.LENGTH_SHORT).show();
+                }
+
+                respuesta = "";
+                Toast.makeText(MainActivity.this, "Se ha pulsado el botón Enviar", Toast.LENGTH_SHORT).show();
             }
         });
 
     }
     private String cambiarPortadaAleatoriamente(ArrayList<String> nombresPortadas) {
-        String nombreImagen = "portada" + indicePortadaActual;
+        if (indicePortadaActual < nombresPortadas.size()) {
+            String nombreImagen = "portada" + (indicePortadaActual + 1);
+            int idImagen = getResources().getIdentifier(nombreImagen, "drawable", getPackageName());
 
-        int idImagen = getResources().getIdentifier(nombreImagen, "drawable", getPackageName());
-        ImageView imageViewPortada = findViewById(R.id.imagen);
-        imageViewPortada.setImageResource(idImagen);
+            ImageView imageViewPortada = findViewById(R.id.imagen);
+            imageViewPortada.setImageResource(idImagen);
 
+            indicePortadaActual++;
 
-        indicePortadaActual++;
-
-        return nombreImagen;
-
+            return nombreImagen;
+        } else {
+            return null;
+        }
     }
+
     private void cambiarOpcion(String nombresPortadas) {
 
         if(nombresPortadas.equals("portada1")){
