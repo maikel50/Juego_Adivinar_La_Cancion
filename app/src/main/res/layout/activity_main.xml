@@ -48,6 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:backgroundTint="#E65100"
                 android:text="PLAY" />
 
             <Button
@@ -55,14 +56,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:backgroundTint="#1B5E20"
                 android:text="STOP" />
 
-            <Button
-                android:id="@+id/btnReplay"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="REPLAY" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -94,12 +91,23 @@
                     android:layout_height="wrap_content"
                     android:text="Opción 3" />
 
+
             </RadioGroup>
 
             <Button
-                android:id="@+id/btnEnviar"
-                android:layout_width="match_parent"
+                android:id="@+id/btnStar"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:backgroundTint="#3D5AFE"
+                android:text="Empezar" />
+
+            <Button
+                android:id="@+id/btnEnviar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:backgroundTint="#DD2C00"
                 android:text="ENVIAR" />
         </LinearLayout>
     </LinearLayout>
